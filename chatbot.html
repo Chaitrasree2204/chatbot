@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>TIRA AI Skincare Chatbot</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>TIRA AI Skincare Chatbot</h1>
+
+    <div class="chatbox">
+
+        <p>What is your skin type?</p>
+
+        <select id="skinType">
+
+            <option>Dry Skin</option>
+            <option>Oily Skin</option>
+            <option>Normal Skin</option>
+            <option>Acne Prone Skin</option>
+
+        </select>
+
+        <p>What is your main concern?</p>
+
+        <select id="concern">
+
+            <option>Acne</option>
+            <option>Dark Spots</option>
+            <option>Sensitivity</option>
+
+        </select>
+
+        <br><br>
+
+        <button onclick="getAdvice()">
+            Ask AI
+        </button>
+
+        <div id="response"></div>
+
+    </div>
+
+</div>
+
+<script>
+
+async function getAdvice(){
+
+    let skinType =
+    document.getElementById("skinType").value;
+
+    let concern =
+    document.getElementById("concern").value;
+
+    let response = await fetch("/chat", {
+
+        method: "POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body: JSON.stringify({
+            skin_type: skinType,
+            concern: concern
+        })
+    });
+
+    let data = await response.json();
+
+    document.getElementById("response").innerHTML =
+        "<h3>AI Recommendation</h3><p>"
+        + data.response +
+        "</p>";
+}
+
+</script>
+
+</body>
+
+</html>
